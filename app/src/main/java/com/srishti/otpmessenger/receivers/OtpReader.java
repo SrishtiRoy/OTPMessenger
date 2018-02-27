@@ -23,10 +23,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-/**
- * Created by swarajpal on 13-12-2015.
- * BroadcastReceiver OtpReader for receiving and processing the SMS messages.
- */
 public class OtpReader extends WakefulBroadcastReceiver {
 
 
@@ -59,37 +55,34 @@ public class OtpReader extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         final Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                 Pattern p = Pattern.compile("(|^)\\d{6}");
+        if (bundle != null) {
+            Pattern p = Pattern.compile("(|^)\\d{6}");
 
-                final Object[] pdusArr = (Object[]) bundle.get("pdus");
+            final Object[] pdusArr = (Object[]) bundle.get("pdus");
 
-                for (int i = 0; i < pdusArr.length; i++) {
+            for (int i = 0; i < pdusArr.length; i++) {
 
-                    SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusArr[i]);
-                    String senderNum = currentMessage.getDisplayOriginatingAddress();
-                    String message = currentMessage.getDisplayMessageBody().toLowerCase();
-                    Log.i(TAG, "senderNum: " + senderNum + " message: " + message);
-                    if(message.contains("otp")||message.contains("verification")||message.contains("code")) {
+                SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusArr[i]);
+                String senderNum = currentMessage.getDisplayOriginatingAddress();
+                String message = currentMessage.getDisplayMessageBody().toLowerCase();
+                Log.i(TAG, "senderNum: " + senderNum + " message: " + message);
+                if (message.contains("otp") || message.contains("verification") || message.contains("code")) {
 
-                        Intent service = new Intent(context, OtpWakefulService.class);
-                        service.putExtra("message",message);
+                    Intent service = new Intent(context, OtpWakefulService.class);
+                    service.putExtra("message", message);
 
-                        // Start the service, keeping the device awake while it is launching.
-                        Log.i("SimpleWakefulReceiver", "Starting service @ " + SystemClock.elapsedRealtime());
-                        startWakefulService(context, service);
-
-                            }
-                    }
-
-
+                    // Start the service, keeping the device awake while it is launching.
+                    Log.i("SimpleWakefulReceiver", "Starting service @ " + SystemClock.elapsedRealtime());
+                    startWakefulService(context, service);
 
                 }
-
-
             }
 
 
+        }
+
+
+    }
 
 
     /**

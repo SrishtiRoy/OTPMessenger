@@ -85,10 +85,10 @@ public class OtpWakefulService extends IntentService {
             if (a.length() > 2) {
 
                 char exp = a.charAt(a.length() - 1);
-                if (exp == '.'||exp == ','||exp == ';') {
-                    String substring=a.substring(0,a.length() - 1);
+                if (exp == '.' || exp == ',' || exp == ';') {
+                    String substring = a.substring(0, a.length() - 1);
 
-                    if ((substring.length()>3 &&substring.length() < 8) && substring.matches(regex)) {
+                    if ((substring.length() > 3 && substring.length() < 8) && substring.matches(regex)) {
 
                         return substring;
 
@@ -97,7 +97,7 @@ public class OtpWakefulService extends IntentService {
 
                 }
             }
-            if ((a.length()>3 && a.length() < 7) && a.matches(regex)) {
+            if ((a.length() > 3 && a.length() < 7) && a.matches(regex)) {
 
                 return a;
 
@@ -107,16 +107,5 @@ public class OtpWakefulService extends IntentService {
         return "";
     }
 
-    private String stripNonDigits(
-            final CharSequence input /* inspired by seh's comment */) {
-        final StringBuilder sb = new StringBuilder(
-                input.length() /* also inspired by seh's comment */);
-        for (int i = 0; i < input.length(); i++) {
-            final char c = input.charAt(i);
-            if (c > 47 && c < 58) {
-                sb.append(c);
-            }
-        }
-        return sb.toString();
-    }
+
 }

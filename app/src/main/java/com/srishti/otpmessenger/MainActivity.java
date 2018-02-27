@@ -20,7 +20,7 @@ import com.srishti.otpmessenger.receivers.OtpReader;
 
 import static com.srishti.otpmessenger.R.styleable.View;
 
-public class MainActivity extends AppCompatActivity implements OTPListener{
+public class MainActivity extends AppCompatActivity implements OTPListener {
 
     private TextView otpView;
 
@@ -28,15 +28,13 @@ public class MainActivity extends AppCompatActivity implements OTPListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        otpView=(TextView)findViewById(R.id.otp_tv) ;
+        otpView = (TextView) findViewById(R.id.otp_tv);
         otpView.setTextSize(30);
-
         OtpReader.bind(this);
         int PERMISSION_ALL = 1;
-        String[] PERMISSIONS = {Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS,Manifest.permission.WAKE_LOCK}
-               ;
+        String[] PERMISSIONS = {Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.WAKE_LOCK};
 
-        if(!hasPermissions(this, PERMISSIONS)){
+        if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
         onNewIntent(getIntent());
@@ -51,19 +49,15 @@ public class MainActivity extends AppCompatActivity implements OTPListener{
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
@@ -72,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements OTPListener{
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
     public static boolean hasPermissions(Context context, String... permissions) {
@@ -86,28 +79,23 @@ public class MainActivity extends AppCompatActivity implements OTPListener{
         return true;
     }
 
-   @Override
+    @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if(intent.getExtras()!=null)
-        {
-            if(intent.getExtras().getString("otp")!=null)
-            {
+        if (intent.getExtras() != null) {
+            if (intent.getExtras().getString("otp") != null) {
                 String otp = intent.getExtras().getString("otp");
                 otpView.setText("Your OTP is :" + otp);
+                blink(otpView, 5, 5);
+            } else {
+                otpView.setText("Wait for your otp");
             }
-            else {
-            otpView.setText("Wait for your otp");
-        }
 
 
         }
     }
 
-    private  void blink(TextView view, int duration, int offset)
-    {
-
-
+    private void blink(TextView view, int duration, int offset) {
         Animation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(duration);
         anim.setStartOffset(offset);
